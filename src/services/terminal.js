@@ -28,9 +28,7 @@ export class Terminal {
   showTerminalOptions() {
     const header = this.generateCustomHeader(20);
 
-    console.log(
-      chalk.cyan(`${header} ${chalk.white("LEARN ENGLISH")} ${header}\n`)
-    );
+    console.log(`${header} ${chalk.white("LEARN ENGLISH")} ${header}\n`);
 
     this.options.map((op, i) =>
       console.log(chalk.white(`${i + 1} - ${op.title}`))
