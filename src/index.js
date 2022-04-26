@@ -10,6 +10,16 @@ import { DictionaryController } from "./controllers/dictionaryController.js";
       title: "Learn random words",
       fn: dictionaryController.findRandomWords,
     },
+    {
+      id: 2,
+      title: "Learn random words by rate",
+      fn: dictionaryController.findRandomWordsByRate,
+    },
+    {
+      id: 3,
+      title: "Change rate of a word",
+      fn: dictionaryController.changeWordRate,
+    },
   ];
 
   new Terminal(options).init();
