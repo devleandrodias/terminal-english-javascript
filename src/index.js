@@ -1,7 +1,9 @@
 import { Terminal } from "./services/terminal.js";
 import { DictionaryController } from "./controllers/dictionaryController.js";
+import { GrammarController } from "./controllers/grammarController.js";
 
 (async () => {
+  const grammarController = new GrammarController();
   const dictionaryController = new DictionaryController();
 
   const options = [
@@ -19,6 +21,11 @@ import { DictionaryController } from "./controllers/dictionaryController.js";
       id: 3,
       title: "Change rate of a word",
       fn: dictionaryController.changeWordRate,
+    },
+    {
+      id: 4,
+      title: "Learn pronouns",
+      fn: grammarController.learnPronouns,
     },
   ];
 
