@@ -24,8 +24,18 @@ import { GrammarController } from "./controllers/grammarController.js";
     },
     {
       id: 4,
+      title: "Find word by name",
+      fn: dictionaryController.findWordByName,
+    },
+    {
+      id: 5,
       title: "Learn pronouns",
       fn: grammarController.learnPronouns,
+    },
+    {
+      id: 6,
+      title: "Report of words",
+      fn: dictionaryController.reportByRate,
     },
   ];
 

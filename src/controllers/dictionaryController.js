@@ -53,6 +53,88 @@ export class DictionaryController {
     );
   }
 
+  async findWordByName() {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+
+    const repository = new DictionaryRepository();
+
+    rl.question(
+      chalk.yellow("What is the word you want to find? "),
+      async (answer) => {
+        const word = await repository.findWordByName(answer);
+
+        const chalkOptions = {
+          columns: [
+            { field: "id", name: chalk.cyan("Id") },
+            { field: "word", name: chalk.cyan("Word") },
+            { field: "rate", name: chalk.cyan("Rate") },
+          ],
+        };
+
+        console.clear();
+
+        ChalkTable.Print(word, chalkOptions);
+
+        rl.close();
+      }
+    );
+  }
+
+  calculatePorcentage(total, number) {
+    return;
+  }
+
+  async reportByRate() {
+    const repository = new DictionaryRepository();
+
+    const words = await repository.findAllWords();
+
+    const numberOfWordsLow = words.filter((word) => word.rate === "LOW").length;
+
+    const numberOfWordsMedium = words.filter(
+      (word) => word.rate === "MEDIUM"
+    ).length;
+
+    const numberOfWordsHigh = words.filter(
+      (word) => word.rate === "HIGH"
+    ).length;
+
+    const totalWords = words.length;
+
+    const report = [
+      {
+        rate: "LOW",
+        numberOfWords: numberOfWordsLow,
+        percentage: ((numberOfWordsLow * 100) / totalWords).toFixed(2),
+      },
+      {
+        rate: "MEDIUM",
+        numberOfWords: numberOfWordsMedium,
+        percentage: ((numberOfWordsMedium * 100) / totalWords).toFixed(2),
+      },
+      {
+        rate: "HIGH",
+        numberOfWords: numberOfWordsHigh,
+        percentage: ((numberOfWordsHigh * 100) / totalWords).toFixed(2),
+      },
+    ];
+
+    const chalkOptions = {
+      columns: [
+        { field: "rate", name: chalk.cyan("Rate") },
+        { field: "numberOfWords", name: chalk.cyan("Number of Words") },
+        { field: "percentage", name: chalk.cyan("Percentage") },
+      ],
+    };
+
+    console.clear();
+
+    ChalkTable.Print(report, chalkOptions);
+  }
+
   async findRandomWordsByRate() {
     const rl = readline.createInterface({
       input: process.stdin,
