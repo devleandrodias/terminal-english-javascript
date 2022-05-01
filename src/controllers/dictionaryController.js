@@ -66,6 +66,17 @@ export class DictionaryController {
       async (answer) => {
         const word = await repository.findWordByName(answer);
 
+        const parsedWords = word.map((obj) => {
+          switch (obj.rate) {
+            case "LOW":
+              return { ...obj, rate: chalk.red(obj.rate) };
+            case "MEDIUM":
+              return { ...obj, rate: chalk.yellow(obj.rate) };
+            case "HIGH":
+              return { ...obj, rate: chalk.green(obj.rate) };
+          }
+        });
+
         const chalkOptions = {
           columns: [
             { field: "id", name: chalk.cyan("Id") },
@@ -76,15 +87,35 @@ export class DictionaryController {
 
         console.clear();
 
-        ChalkTable.Print(word, chalkOptions);
+        ChalkTable.Print(parsedWords, chalkOptions);
 
-        rl.close();
+        rl.question(
+          chalk.yellow("Do you want to change the rate? (y/n) "),
+          async (yesOrNo) => {
+            if (yesOrNo.toUpperCase() === "Y") {
+              const wordId = word[0].id;
+
+              rl.question(
+                chalk.yellow("\nWhat is the new rate [LOW - MEDIUM - HIGH] "),
+                async (rate) => {
+                  await repository.changeWordRate(wordId, rate.toUpperCase());
+
+                  console.clear();
+
+                  console.log(
+                    chalk.greenBright("\nWord rate changed successfully!")
+                  );
+
+                  rl.close();
+                }
+              );
+            } else {
+              rl.close();
+            }
+          }
+        );
       }
     );
-  }
-
-  calculatePorcentage(total, number) {
-    return;
   }
 
   async reportByRate() {
@@ -104,21 +135,34 @@ export class DictionaryController {
 
     const totalWords = words.length;
 
+    var formatter = new Intl.NumberFormat("en-US", {
+      style: "percent",
+      minimumIntegerDigits: 2,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
     const report = [
       {
         rate: "LOW",
         numberOfWords: numberOfWordsLow,
-        percentage: ((numberOfWordsLow * 100) / totalWords).toFixed(2),
+        percentage: formatter.format(
+          (numberOfWordsLow * 100) / totalWords / 100
+        ),
       },
       {
         rate: "MEDIUM",
         numberOfWords: numberOfWordsMedium,
-        percentage: ((numberOfWordsMedium * 100) / totalWords).toFixed(2),
+        percentage: formatter.format(
+          (numberOfWordsMedium * 100) / totalWords / 100
+        ),
       },
       {
         rate: "HIGH",
         numberOfWords: numberOfWordsHigh,
-        percentage: ((numberOfWordsHigh * 100) / totalWords).toFixed(2),
+        percentage: formatter.format(
+          (numberOfWordsHigh * 100) / totalWords / 100
+        ),
       },
     ];
 
@@ -142,7 +186,7 @@ export class DictionaryController {
     });
 
     rl.question(
-      chalk.yellow("Which rate do you want to learn LOW/MEDIUM/HIGH? "),
+      chalk.yellow("Which rate do you want to learn [LOW - MEDIUM - HIGH] "),
       async (answer) => {
         const repository = new DictionaryRepository();
 
