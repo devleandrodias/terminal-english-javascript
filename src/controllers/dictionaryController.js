@@ -96,7 +96,9 @@ export class DictionaryController {
               const wordId = word[0].id;
 
               rl.question(
-                chalk.yellow("\nWhat is the new rate [LOW - MEDIUM - HIGH] "),
+                chalk.yellow(
+                  "\nWhat is the new rate [LOW - NEW WORD - MEDIUM - HIGH] "
+                ),
                 async (rate) => {
                   await repository.changeWordRate(wordId, rate.toUpperCase());
 
@@ -125,6 +127,10 @@ export class DictionaryController {
 
     const numberOfWordsLow = words.filter((word) => word.rate === "LOW").length;
 
+    const numberOfWordsNewWords = words.filter(
+      (word) => word.rate === "NEW WORD"
+    ).length;
+
     const numberOfWordsMedium = words.filter(
       (word) => word.rate === "MEDIUM"
     ).length;
@@ -148,6 +154,13 @@ export class DictionaryController {
         numberOfWords: numberOfWordsLow,
         percentage: formatter.format(
           (numberOfWordsLow * 100) / totalWords / 100
+        ),
+      },
+      {
+        rate: "NEW WORD",
+        numberOfWords: numberOfWordsNewWords,
+        percentage: formatter.format(
+          (numberOfWordsNewWords * 100) / totalWords / 100
         ),
       },
       {
