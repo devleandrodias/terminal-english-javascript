@@ -30,9 +30,7 @@ export class Terminal {
 
     console.log(`${header} ${chalk.white("LEARN ENGLISH")} ${header}\n`);
 
-    this.options.map((op, i) =>
-      console.log(chalk.white(`${i + 1} - ${op.title}`))
-    );
+    this.options.map((op, i) => console.log(chalk.white(`${i} - ${op.title}`)));
 
     console.log(`\n${this.generateCustomHeader(55)}`);
 
@@ -47,7 +45,7 @@ export class Terminal {
 
         this.rl.close();
 
-        this.options.find((op) => op.id === option).fn();
+        this.options[option].fn();
       }
     );
   }

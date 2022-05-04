@@ -1,6 +1,6 @@
 import { Terminal } from "./services/terminal.js";
-import { DictionaryController } from "./controllers/dictionaryController.js";
 import { GrammarController } from "./controllers/grammarController.js";
+import { DictionaryController } from "./controllers/dictionaryController.js";
 
 (async () => {
   const grammarController = new GrammarController();
@@ -8,32 +8,34 @@ import { GrammarController } from "./controllers/grammarController.js";
 
   const options = [
     {
-      id: 1,
+      title: "Exit",
+      fn: () => process.exit(0),
+    },
+    {
       title: "Learn random words",
       fn: dictionaryController.findRandomWords,
     },
     {
-      id: 2,
       title: "Learn random words by rate",
       fn: dictionaryController.findRandomWordsByRate,
     },
     {
-      id: 3,
+      title: "Learn random words by length",
+      fn: dictionaryController.findRandomWordsByLength,
+    },
+    {
       title: "Change rate of a word",
       fn: dictionaryController.changeWordRate,
     },
     {
-      id: 4,
       title: "Find word by name",
       fn: dictionaryController.findWordByName,
     },
     {
-      id: 5,
       title: "Learn pronouns",
       fn: grammarController.learnPronouns,
     },
     {
-      id: 6,
       title: "Report of words",
       fn: dictionaryController.reportByRate,
     },

@@ -38,7 +38,6 @@ export class DictionaryController {
         });
 
         const chalkOptions = {
-          leftPad: 2,
           columns: [
             { field: "id", name: chalk.cyan("Id") },
             { field: "word", name: chalk.cyan("Word") },
@@ -51,6 +50,82 @@ export class DictionaryController {
         rl.close();
       }
     );
+  }
+
+  async findRandomWordsByRate() {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+
+    rl.question(
+      chalk.yellow("Which rate do you want to learn [LOW - MEDIUM - HIGH] "),
+      async (answer) => {
+        const repository = new DictionaryRepository();
+
+        const result = await repository.findRandomWordsByRate(
+          answer.toUpperCase()
+        );
+
+        const chalkOptions = {
+          columns: [
+            { field: "id", name: chalk.cyan("Id") },
+            { field: "word", name: chalk.cyan("Word") },
+            { field: "rate", name: chalk.cyan("Rate") },
+          ],
+        };
+
+        console.clear();
+
+        ChalkTable.Print(result, chalkOptions);
+
+        rl.close();
+      }
+    );
+  }
+
+  async findRandomWordsByLength() {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+
+    rl.question(chalk.yellow("What is the word length? "), async (answer) => {
+      const repository = new DictionaryRepository();
+
+      const words = await repository.findAllWords();
+
+      const filteredWords = words.filter(
+        ({ word }) => word.length === Number(answer)
+      );
+
+      const parsedWords = filteredWords.map((obj) => {
+        switch (obj.rate) {
+          case "LOW":
+            return { ...obj, rate: chalk.red(obj.rate) };
+          case "NEW WORD":
+            return { ...obj, rate: chalk.magenta(obj.rate) };
+          case "MEDIUM":
+            return { ...obj, rate: chalk.yellow(obj.rate) };
+          case "HIGH":
+            return { ...obj, rate: chalk.green(obj.rate) };
+        }
+      });
+
+      const chalkOptions = {
+        columns: [
+          { field: "id", name: chalk.cyan("Id") },
+          { field: "word", name: chalk.cyan("Word") },
+          { field: "rate", name: chalk.cyan("Rate") },
+        ],
+      };
+
+      console.clear();
+
+      ChalkTable.Print(parsedWords, chalkOptions);
+
+      rl.close();
+    });
   }
 
   async findWordByName() {
@@ -190,38 +265,6 @@ export class DictionaryController {
     console.clear();
 
     ChalkTable.Print(report, chalkOptions);
-  }
-
-  async findRandomWordsByRate() {
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-
-    rl.question(
-      chalk.yellow("Which rate do you want to learn [LOW - MEDIUM - HIGH] "),
-      async (answer) => {
-        const repository = new DictionaryRepository();
-
-        const result = await repository.findRandomWordsByRate(
-          answer.toUpperCase()
-        );
-
-        const chalkOptions = {
-          columns: [
-            { field: "id", name: chalk.cyan("Id") },
-            { field: "word", name: chalk.cyan("Word") },
-            { field: "rate", name: chalk.cyan("Rate") },
-          ],
-        };
-
-        console.clear();
-
-        ChalkTable.Print(result, chalkOptions);
-
-        rl.close();
-      }
-    );
   }
 
   async changeWordRate() {
