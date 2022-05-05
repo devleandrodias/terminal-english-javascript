@@ -1,15 +1,21 @@
 import { Terminal } from "./services/terminal.js";
 import { GrammarController } from "./controllers/grammarController.js";
 import { DictionaryController } from "./controllers/dictionaryController.js";
+import { ElementaryController } from "./controllers/elementaryController.js";
 
 (async () => {
   const grammarController = new GrammarController();
+  const elementaryController = new ElementaryController();
   const dictionaryController = new DictionaryController();
 
   const options = [
     {
       title: "Exit",
       fn: () => process.exit(0),
+    },
+    {
+      title: "Learn the numbers",
+      fn: elementaryController.learnNumbers,
     },
     {
       title: "Learn random words",

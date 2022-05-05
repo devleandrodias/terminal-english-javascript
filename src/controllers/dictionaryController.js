@@ -5,8 +5,6 @@ import { ChalkTable } from "../utils/chalkTable.js";
 import { DictionaryRepository } from "../repositories/dictionaryRepository.js";
 
 export class DictionaryController {
-  constructor() {}
-
   async findRandomWords() {
     const rl = readline.createInterface({
       input: process.stdin,

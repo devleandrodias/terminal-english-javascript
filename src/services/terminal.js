@@ -45,7 +45,12 @@ export class Terminal {
 
         this.rl.close();
 
-        this.options[option].fn();
+        if (option > this.options.length) {
+          console.log(chalk.red("Sorry, the option is not available!"));
+          this.rl.close();
+        } else {
+          this.options[option].fn();
+        }
       }
     );
   }
