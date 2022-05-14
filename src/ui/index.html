@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Speech Recognition API</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <script>
+    const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
+
+    this.recognition = new SpeechRecognition();
+
+    let isRecording = false;
+
+    recognition.lang = "en-US";
+    recognition.continuous = true;
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    const saidWords = [];
+
+    function loadRecords() {
+      // Fetch... chamar API e trazer gravações
+    }
+
+    function saveWords(database) {
+      // Fetch... chamar API e persistir dados
+    }
+
+    function startRecord() {
+      console.log("Start recording...");
+      isRecording = true
+      recognition.start();
+    }
+
+    function stopRecord() {
+      console.log("Stop recording...");
+      isRecording = false
+      recognition.stop();
+      console.log(splitWords(saidWords));
+    }
+
+    function splitWords(words) {
+      return new Set(words.join().split(" ").sort());
+    }
+
+    recognition.onresult = function (event) {
+      var resultsLength = event.results.length - 1;
+      var ArrayLength = event.results[resultsLength].length - 1;
+      var saidWord = event.results[resultsLength][ArrayLength].transcript;
+
+      saidWords.push(saidWord);
+    };
+
+  </script>
+
+  <div class="record-area">
+    <button class="btn-record" onclick="isRecording ? startRecord() : stopRecord()">
+      <i class="fa-solid fa-play fa-3x"></i>
+    </button>
+    <span class="time-record">00:00</span>
+  </div>
+  <div class="cards-area">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-header-infos">
+          <span>RECORD</span>
+          <span>00:00</span>
+        </div>
+        <div class="card-header-title">
+          <span>Class about verbs</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <button>More</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-header-infos">
+          <span>RECORD</span>
+          <span>00:00</span>
+        </div>
+        <div class="card-header-title">
+          <span>Class about verbs</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <button>More</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-header-infos">
+          <span>RECORD</span>
+          <span>00:00</span>
+        </div>
+        <div class="card-header-title">
+          <span>Class about verbs</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <button>More</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-header-infos">
+          <span>RECORD</span>
+          <span>00:00</span>
+        </div>
+        <div class="card-header-title">
+          <span>Class about verbs</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <button>More</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-header-infos">
+          <span>RECORD</span>
+          <span>00:00</span>
+        </div>
+        <div class="card-header-title">
+          <span>Class about verbs</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <button>More</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-header-infos">
+          <span>RECORD</span>
+          <span>00:00</span>
+        </div>
+        <div class="card-header-title">
+          <span>Class about verbs</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <button>More</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
