@@ -41,12 +41,49 @@
     function startRecord() {
       console.log("Start recording...");
       isRecording = true
+      document.getElementById('icon-timer').setAttribute('class', 'fa-solid fa-stop fa-3x')
       recognition.start();
+      updateTime()
+    }
+
+    function formatNumberTwoDigits(number) {
+      return number.toLocaleString('en-US', {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+      })
+    }
+
+    function updateTime(second = 0, minute = 0, hour = 0) {
+      document.getElementById('time-record-second').innerText = formatNumberTwoDigits(second)
+      document.getElementById('time-record-minute').innerText = formatNumberTwoDigits(minute)
+      document.getElementById('time-record-hour').innerText = formatNumberTwoDigits(hour)
+
+      if (second < 59) second++
+
+      else if (second === 59 && minute === 59) {
+        second = 0
+        minute = 0
+        hour++
+      }
+
+      else {
+        second = 0
+        minute++
+      }
+
+      if (isRecording) {
+        setTimeout(() => updateTime(second, minute, hour), 1000)
+      } else {
+        document.getElementById('time-record-second').innerText = formatNumberTwoDigits(0)
+        document.getElementById('time-record-minute').innerText = formatNumberTwoDigits(0)
+        document.getElementById('time-record-hour').innerText = formatNumberTwoDigits(0)
+      }
     }
 
     function stopRecord() {
       console.log("Stop recording...");
       isRecording = false
+      document.getElementById('icon-timer').setAttribute('class', 'fa-solid fa-play fa-3x')
       recognition.stop();
       console.log(splitWords(saidWords));
     }
@@ -66,10 +103,16 @@
   </script>
 
   <div class="record-area">
-    <button class="btn-record" onclick="isRecording ? startRecord() : stopRecord()">
-      <i class="fa-solid fa-play fa-3x"></i>
+    <button class="btn-record" onclick="isRecording ? stopRecord() : startRecord()">
+      <i id="icon-timer" class="fa-solid fa-play fa-3x"></i>
     </button>
-    <span class="time-record">00:00</span>
+    <div class="time-record">
+      <span id="time-record-hour">00</span>
+      <span>:</span>
+      <span id="time-record-minute">00</span>
+      <span>:</span>
+      <span id="time-record-second">00</span>
+    </div>
   </div>
   <div class="cards-area">
     <div class="card">
